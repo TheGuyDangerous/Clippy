@@ -1,6 +1,6 @@
-# cdcfucker
+# scrapper-daddy
 
-Fucks Cdc like no  one has, ever before...
+Hobby proj for DevOps tuts...
 
 ## Getting Started
 
