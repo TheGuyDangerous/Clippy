@@ -39,7 +39,7 @@ jobs:
         flutter-version: '3.19.2'
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter build web
+    - run: flutter build web --base-href /${{ github.event.repository.name }}/
     - uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.TOKEN }}
