@@ -7,60 +7,6 @@ on:
     branches: [ main ]
 
 jobs:
-  build_web:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.19.2'
-        channel: 'stable'
-    - run: flutter pub get
-    - run: flutter build web
-    - uses: actions/upload-artifact@v2
-      with:
-        name: web-build
-        path: build/web
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.TOKEN }}
-        publish_dir: ./build/web
-
-  build_android:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.19.2'
-        channel: 'stable'
-    - run: flutter pub get
-    - run: flutter build apk --split-per-abi
-    - uses: actions/upload-artifact@v2
-      with:
-        name: android-build
-        path: build/app/outputs/flutter-apk
-
-  build_ios:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.19.2'
-        channel: 'stable'
-    - run: flutter pub get
-    - run: flutter build ios --release --no-codesign
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ios-build
-        path: build/ios/iphoneos
-
   create_env_file:
     runs-on: ubuntu-latest
     steps:
@@ -79,3 +25,69 @@ jobs:
       with:
         name: env-file
         path: .env
+
+  build_web:
+    needs: create_env_file
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: env-file
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.2'
+        channel: 'stable'
+    - run: flutter pub get
+    - run: flutter build web
+    - uses: actions/upload-artifact@v2
+      with:
+        name: web-build
+        path: build/web
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        publish_dir: ./build/web
+
+  build_android:
+    needs: create_env_file
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: env-file
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.2'
+        channel: 'stable'
+    - run: flutter pub get
+    - run: flutter build apk --split-per-abi
+    - uses: actions/upload-artifact@v2
+      with:
+        name: android-build
+        path: build/app/outputs/flutter-apk
+
+  build_ios:
+    needs: create_env_file
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: env-file
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.2'
+        channel: 'stable'
+    - run: flutter pub get
+    - run: flutter build ios --release --no-codesign
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ios-build
+        path: build/ios/iphoneos
