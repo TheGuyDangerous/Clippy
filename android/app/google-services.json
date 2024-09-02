@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "595559664824",
+    "firebase_url": "https://scraper-daddy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "scraper-daddy",
+    "storage_bucket": "scraper-daddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595559664824:android:3280b2465ff1a4161c784d",
+        "android_client_info": {
+          "package_name": "com.sannidhya.cdcfucker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595559664824-ljh87dpf9a7ndtq4df0ivlghsn12kiah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwg8MRMLxD1Lc4lZDsrKiJ7bm9YemsYFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595559664824-ljh87dpf9a7ndtq4df0ivlghsn12kiah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
