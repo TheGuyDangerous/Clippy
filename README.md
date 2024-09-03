@@ -1,6 +1,6 @@
-# scrapper-daddy
+# Clippy
 
-Hobby proj for DevOps tuts...
+Hobby proj for async clipboard support.
 
 ## Getting Started
 
