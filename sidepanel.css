@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #343541;
+    color: #FFFFFF;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#loginSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#googleSignIn {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#chatSection {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#chatMessages {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid #565869;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444654;
+}
+
+.input-area {
+    display: flex;
+}
+
+#messageInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #565869;
+    border-radius: 4px 0 0 4px;
+    background-color: #40414F;
+    color: #FFFFFF;
+}
+
+#sendMessage {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}

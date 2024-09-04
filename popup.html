@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clippy</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Clippy</h2>
+    <div class="toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="toggleSwitch">
+        <span class="slider round"></span>
+      </label>
+      <span id="statusText"></span>
+    </div>
+    <button id="locateButton" class="btn">Locate Element</button>
+    <button id="openSidePanel" class="btn">Open Side Panel</button>
+    <div class="toggle-container dark-mode-toggle">
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider round"></span>
+      </label>
+      <span>Dark Mode</span>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
