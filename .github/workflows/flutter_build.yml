@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v4.1.7
+    - uses: actions/download-artifact@v2
       with:
         name: env-file
     - uses: subosito/flutter-action@v2
@@ -57,7 +57,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v4.1.7
+    - uses: actions/download-artifact@v2
       with:
         name: env-file
     - uses: actions/setup-java@v2
