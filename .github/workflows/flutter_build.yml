@@ -52,14 +52,31 @@ jobs:
              -d '{"state": "success", "environment": "production", "description": "Deployed to production"}' \
              https://api.github.com/repos/${{ github.repository }}/deployments/${{ github.run_id }}/statuses
 
+  build_extension:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: extension
+    - name: Zip extension
+      run: |
+        zip -r clippy-extension.zip *
+    - uses: actions/upload-artifact@v2
+      with:
+        name: extension-zip
+        path: clippy-extension.zip
+
   build_and_release:
-    needs: create_env_file
+    needs: [create_env_file, build_extension]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
       with:
         name: env-file
+    - uses: actions/download-artifact@v2
+      with:
+        name: extension-zip
     - uses: actions/setup-java@v2
       with:
         distribution: 'zulu'
@@ -135,3 +152,14 @@ jobs:
         asset_path: ./build/ios/iphoneos/app.ipa
         asset_name: app.ipa
         asset_content_type: application/octet-stream
+
+    # Upload Chrome Extension
+    - name: Upload Chrome Extension
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./clippy-extension.zip
+        asset_name: clippy-extension.zip
+        asset_content_type: application/zip
