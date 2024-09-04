@@ -52,10 +52,48 @@ jobs:
              -d '{"state": "success", "environment": "production", "description": "Deployed to production"}' \
              https://api.github.com/repos/${{ github.repository }}/deployments/${{ github.run_id }}/statuses
 
-  build_and_release:
+  build_extension:
     needs: create_env_file
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: extension
+    - uses: actions/download-artifact@v2
+      with:
+        name: env-file
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: npm install
+    - name: Create .env file for extension
+      run: |
+        echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_DATABASE_URL=${{ secrets.FIREBASE_DATABASE_URL }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
+        echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env
+    - name: Build extension
+      run: npm run build
+    - name: Package extension
+      run: |
+        zip -r clippy-extension.zip build/*
+    - uses: actions/upload-artifact@v2
+      with:
+        name: extension-zip
+        path: clippy-extension.zip
+
+  build_and_release:
+    needs: [create_env_file, build_extension]
     runs-on: macos-latest
     steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: extension-zip
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v2
       with:
@@ -135,3 +173,13 @@ jobs:
         asset_path: ./build/ios/iphoneos/app.ipa
         asset_name: app.ipa
         asset_content_type: application/octet-stream
+
+    - name: Upload Chrome Extension
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./clippy-extension.zip
+        asset_name: clippy-extension.zip
+        asset_content_type: application/zip
